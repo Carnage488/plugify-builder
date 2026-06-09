@@ -1,0 +1,123 @@
+name: Build dg_cs2_core Linux
+
+on:
+  workflow_dispatch:
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build-linuxsteamrt64:
+    runs-on: ubuntu-latest
+
+    container:
+      image: registry.gitlab.steamos.cloud/steamrt/sniper/sdk:latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install build tools
+        shell: bash -el {0}
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            curl \
+            ca-certificates \
+            unzip \
+            git \
+            build-essential \
+            pkg-config \
+            cmake \
+            ninja-build \
+            clang \
+            libssl-dev
+
+      - name: Unpack dg_cs2_core.zip
+        shell: bash -el {0}
+        run: |
+          test -f dg_cs2_core.zip
+
+          rm -rf source
+          mkdir -p source
+
+          unzip -q dg_cs2_core.zip -d source
+
+          echo "===== Searching Cargo.toml ====="
+          find source -name Cargo.toml -type f
+
+          PROJECT_DIR="$(find source -name Cargo.toml -type f -printf '%h\n' | head -n 1)"
+
+          if [ -z "$PROJECT_DIR" ]; then
+            echo "Cargo.toml not found"
+            find source -maxdepth 5 -type f
+            exit 1
+          fi
+
+          echo "PROJECT_DIR=$PROJECT_DIR" >> "$GITHUB_ENV"
+          echo "Project dir: $PROJECT_DIR"
+
+      - name: Install Rust
+        shell: bash -el {0}
+        run: |
+          curl https://sh.rustup.rs -sSf | sh -s -- -y --profile minimal --default-toolchain stable
+          echo "$HOME/.cargo/bin" >> "$GITHUB_PATH"
+
+      - name: Build release
+        shell: bash -el {0}
+        run: |
+          cd "$PROJECT_DIR"
+          cargo build --release
+
+      - name: Prepare artifact
+        shell: bash -el {0}
+        run: |
+          cd "$PROJECT_DIR"
+
+          mkdir -p "$GITHUB_WORKSPACE/output/csgo/addons/plugify/envs/dg_cs2_core/bin"
+          mkdir -p "$GITHUB_WORKSPACE/output/csgo/addons/plugify/configs"
+
+          if [ -f target/release/libdg_cs2_core.so ]; then
+            cp target/release/libdg_cs2_core.so "$GITHUB_WORKSPACE/output/csgo/addons/plugify/envs/dg_cs2_core/bin/dg_cs2_core.so"
+          elif [ -f target/release/dg_cs2_core.so ]; then
+            cp target/release/dg_cs2_core.so "$GITHUB_WORKSPACE/output/csgo/addons/plugify/envs/dg_cs2_core/bin/dg_cs2_core.so"
+          else
+            echo "Built .so not found"
+            find target/release -maxdepth 3 -type f
+            exit 1
+          fi
+
+          cat > "$GITHUB_WORKSPACE/output/csgo/addons/plugify/envs/dg_cs2_core/dg_cs2_core.pplugin" <<'EOF'
+{
+  "$schema": "https://raw.githubusercontent.com/untrustedmodders/plugify/refs/heads/main/schemas/plugin.schema.json",
+  "version": "0.1.0",
+  "name": "dg_cs2_core",
+  "description": "Core CS2 plugin for DjangoGame integration",
+  "author": "Carnage488",
+  "website": "https://github.com/Carnage488",
+  "license": "MIT",
+  "entry": "bin/dg_cs2_core",
+  "platforms": [],
+  "language": "rust",
+  "dependencies": [],
+  "methods": [],
+  "classes": []
+}
+EOF
+
+          if [ -f configs/dg_cs2_core.toml ]; then
+            cp configs/dg_cs2_core.toml "$GITHUB_WORKSPACE/output/csgo/addons/plugify/configs/dg_cs2_core.toml"
+          elif [ -f dg_cs2_core.toml ]; then
+            cp dg_cs2_core.toml "$GITHUB_WORKSPACE/output/csgo/addons/plugify/configs/dg_cs2_core.toml"
+          fi
+
+          echo "===== OUTPUT FILES ====="
+          find "$GITHUB_WORKSPACE/output" -type f
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dg_cs2_core-linuxsteamrt64
+          path: output/
+          retention-days: 7
