@@ -1,0 +1,71 @@
+name: Build Plugify Linux
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: "Version/tag/branch to build"
+        required: true
+        default: "v2.1.3"
+
+env:
+  BUILD_TYPE: Release
+  PROJECT_NAME: plugify-metamod-loader
+
+jobs:
+  build-linuxsteamrt64:
+    runs-on: ubuntu-latest
+
+    container:
+      image: registry.gitlab.steamos.cloud/steamrt/sniper/sdk:latest
+
+    steps:
+      - name: Checkout plugify-metamod-loader
+        uses: actions/checkout@v4
+        with:
+          repository: untrustedmodders/plugify-metamod-loader
+          ref: ${{ inputs.ref }}
+          submodules: recursive
+          path: source
+
+      - name: Install GCC 14
+        shell: bash -el {0}
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gcc-14-monolithic
+          ln -sf /usr/bin/gcc-14 /usr/bin/gcc
+          ln -sf /usr/bin/g++-14 /usr/bin/g++
+
+      - name: Configure
+        shell: bash -el {0}
+        working-directory: source
+        run: |
+          cmake -S . -B build -G "Ninja" \
+            -DMMS2_VERSION="${{ inputs.ref }}" \
+            -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }}
+
+      - name: Build
+        shell: bash -el {0}
+        working-directory: source
+        run: |
+          cmake --build build \
+            --target ${{ env.PROJECT_NAME }} \
+            --config ${{ env.BUILD_TYPE }} \
+            --parallel
+
+      - name: Prepare artifacts
+        shell: bash -el {0}
+        working-directory: source
+        run: |
+          mkdir -p build/output/csgo/addons/plugify/bin/linuxsteamrt64/
+          cp build/*plugify.* build/output/csgo/addons/plugify/bin/linuxsteamrt64/
+          cp build/micromamba* build/output/csgo/addons/plugify/bin/linuxsteamrt64/
+          cp -r build/addons build/output/csgo
+          find build/output -type f \( -name "*.exp" -o -name "*.ilk" -o -name "*.lib" -o -name "*.pdb" \) -delete
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: plugify-metamod-loader-linuxsteamrt64-${{ inputs.ref }}
+          path: source/build/output/
+          retention-days: 7
