@@ -28,6 +28,13 @@ jobs:
           submodules: recursive
           path: source
 
+      - name: Patch SourceHook include path
+        shell: bash -el {0}
+        working-directory: source
+        run: |
+          sed -i 's|#"${CMAKE_CURRENT_SOURCE_DIR}/external/metamod-source/core/sourcehook"|"${CMAKE_CURRENT_SOURCE_DIR}/external/metamod-source/core/sourcehook"|' CMakeLists.txt
+          grep -n "sourcehook" CMakeLists.txt
+
       - name: Install GCC 14
         shell: bash -el {0}
         run: |
@@ -58,10 +65,15 @@ jobs:
         working-directory: source
         run: |
           mkdir -p build/output/csgo/addons/plugify/bin/linuxsteamrt64/
+
           cp build/*plugify.* build/output/csgo/addons/plugify/bin/linuxsteamrt64/
           cp build/micromamba* build/output/csgo/addons/plugify/bin/linuxsteamrt64/
           cp -r build/addons build/output/csgo
+
           find build/output -type f \( -name "*.exp" -o -name "*.ilk" -o -name "*.lib" -o -name "*.pdb" \) -delete
+
+          echo "===== OUTPUT FILES ====="
+          find build/output -type f
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
