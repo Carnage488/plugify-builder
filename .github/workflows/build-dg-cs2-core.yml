@@ -89,22 +89,22 @@ jobs:
           fi
 
           cat > "$GITHUB_WORKSPACE/output/csgo/addons/plugify/envs/dg_cs2_core/dg_cs2_core.pplugin" <<'EOF'
-{
-  "$schema": "https://raw.githubusercontent.com/untrustedmodders/plugify/refs/heads/main/schemas/plugin.schema.json",
-  "version": "0.1.0",
-  "name": "dg_cs2_core",
-  "description": "Core CS2 plugin for DjangoGame integration",
-  "author": "Carnage488",
-  "website": "https://github.com/Carnage488",
-  "license": "MIT",
-  "entry": "bin/dg_cs2_core",
-  "platforms": [],
-  "language": "rust",
-  "dependencies": [],
-  "methods": [],
-  "classes": []
-}
-EOF
+          {
+            "$schema": "https://raw.githubusercontent.com/untrustedmodders/plugify/refs/heads/main/schemas/plugin.schema.json",
+            "version": "0.1.0",
+            "name": "dg_cs2_core",
+            "description": "Core CS2 plugin for DjangoGame integration",
+            "author": "Carnage488",
+            "website": "https://github.com/Carnage488",
+            "license": "MIT",
+            "entry": "bin/dg_cs2_core",
+            "platforms": [],
+            "language": "rust",
+            "dependencies": [],
+            "methods": [],
+            "classes": []
+          }
+          EOF
 
           if [ -f configs/dg_cs2_core.toml ]; then
             cp configs/dg_cs2_core.toml "$GITHUB_WORKSPACE/output/csgo/addons/plugify/configs/dg_cs2_core.toml"
