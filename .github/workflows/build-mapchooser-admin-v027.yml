@@ -52,7 +52,13 @@ jobs:
           sha256sum \
             mapchooser_admin_src/encoded/lib.rs.b64.00 \
             mapchooser_admin_src/encoded/lib.rs.b64.01 \
-            mapchooser_admin_src/encoded/lib.rs.b64.02 \
+            mapchooser_admin_src/encoded/lib.rs.b64.02.00 \
+            mapchooser_admin_src/encoded/lib.rs.b64.02.01 \
+            mapchooser_admin_src/encoded/lib.rs.b64.02.02 \
+            mapchooser_admin_src/encoded/lib.rs.b64.02.03 \
+            mapchooser_admin_src/encoded/lib.rs.b64.02.04 \
+            mapchooser_admin_src/encoded/lib.rs.b64.02.05 \
+            mapchooser_admin_src/encoded/lib.rs.b64.02.06 \
             mapchooser_admin_src/encoded/lib.rs.b64.03 \
             mapchooser_admin_src/encoded/lib.rs.b64.04 \
             mapchooser_admin_src/encoded/lib.rs.b64.05.00 \
@@ -66,7 +72,13 @@ jobs:
           cat \
             mapchooser_admin_src/encoded/lib.rs.b64.00 \
             mapchooser_admin_src/encoded/lib.rs.b64.01 \
-            mapchooser_admin_src/encoded/lib.rs.b64.02 \
+            mapchooser_admin_src/encoded/lib.rs.b64.02.00 \
+            mapchooser_admin_src/encoded/lib.rs.b64.02.01 \
+            mapchooser_admin_src/encoded/lib.rs.b64.02.02 \
+            mapchooser_admin_src/encoded/lib.rs.b64.02.03 \
+            mapchooser_admin_src/encoded/lib.rs.b64.02.04 \
+            mapchooser_admin_src/encoded/lib.rs.b64.02.05 \
+            mapchooser_admin_src/encoded/lib.rs.b64.02.06 \
             mapchooser_admin_src/encoded/lib.rs.b64.03 \
             mapchooser_admin_src/encoded/lib.rs.b64.04 \
             mapchooser_admin_src/encoded/lib.rs.b64.05.00 \
