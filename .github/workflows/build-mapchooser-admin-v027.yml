@@ -1,0 +1,121 @@
+name: Build MapChooserAdmin v0.2.7
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - mapchooser_admin_src/**
+      - .github/workflows/build-mapchooser-admin-v027.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mapchooser-admin-v027-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build-linuxsteamrt64:
+    runs-on: ubuntu-latest
+    container:
+      image: registry.gitlab.steamos.cloud/steamrt/sniper/sdk:latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install build tools
+        shell: bash -el {0}
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y curl ca-certificates git build-essential pkg-config file binutils zip
+
+      - name: Install Rust
+        shell: bash -el {0}
+        run: |
+          curl https://sh.rustup.rs -sSf | sh -s -- -y --profile minimal --default-toolchain stable
+          echo "$HOME/.cargo/bin" >> "$GITHUB_PATH"
+
+      - name: Restore generated sources
+        shell: bash -el {0}
+        run: |
+          set -euo pipefail
+
+          cat \
+            mapchooser_admin_src/encoded/lib.rs.b64.00 \
+            mapchooser_admin_src/encoded/lib.rs.b64.01 \
+            mapchooser_admin_src/encoded/lib.rs.b64.02 \
+            mapchooser_admin_src/encoded/lib.rs.b64.03 \
+            mapchooser_admin_src/encoded/lib.rs.b64.04 \
+            mapchooser_admin_src/encoded/lib.rs.b64.05.00 \
+            mapchooser_admin_src/encoded/lib.rs.b64.05.01 \
+            mapchooser_admin_src/encoded/lib.rs.b64.05.02 \
+            mapchooser_admin_src/encoded/lib.rs.b64.05.03 \
+            mapchooser_admin_src/encoded/lib.rs.b64.05.04 \
+            mapchooser_admin_src/encoded/lib.rs.b64.05.05 \
+            mapchooser_admin_src/encoded/lib.rs.b64.05.06 \
+            | tr -d '[:space:]' \
+            | base64 -d > mapchooser_admin_src/src/lib.rs
+
+          echo "56ab5936c261149ffbaf0dff03869d9a5eb7b2be1e754c8e5a51bb425b4155ee  mapchooser_admin_src/src/lib.rs" \
+            | sha256sum --check
+
+          git checkout e7d070352ab83b32c203a3f9d824674537b63e28 -- rust_admin_esp_src/src/s2sdk
+          cp -a rust_admin_esp_src/src/s2sdk mapchooser_admin_src/src/s2sdk
+          test -f mapchooser_admin_src/src/s2sdk/mod.rs
+
+      - name: Test and build release
+        shell: bash -el {0}
+        run: |
+          set -euo pipefail
+          rm -rf compiled
+          mkdir -p compiled
+
+          cd mapchooser_admin_src
+          cargo test 2>&1 | tee ../compiled/cargo-test.log
+          cargo build --release 2>&1 | tee ../compiled/cargo-build.log
+          cd ..
+
+      - name: Validate and package
+        shell: bash -el {0}
+        run: |
+          set -euo pipefail
+          SO="mapchooser_admin_src/target/release/libmapchooser_admin.so"
+          test -f "$SO"
+
+          file "$SO" | tee compiled/file.txt
+          readelf -h "$SO" > compiled/readelf-header.txt
+          readelf -Ws "$SO" > compiled/readelf-symbols.txt
+          ldd "$SO" > compiled/ldd.txt 2>&1 || true
+          sha256sum "$SO" | tee compiled/mapchooser_admin.sha256
+
+          rm -rf compiled/MapChooserAdmin
+          mkdir -p compiled/MapChooserAdmin/bin
+          mkdir -p compiled/MapChooserAdmin/configs/mapchooser
+          cp "$SO" compiled/MapChooserAdmin/bin/mapchooser_admin
+          cp mapchooser_admin_src/mapchooser-admin.pplugin compiled/MapChooserAdmin/mapchooser-admin.pplugin
+          cp mapchooser_admin_src/configs/mapchooser/admin.toml compiled/MapChooserAdmin/configs/mapchooser/admin.toml
+
+          (
+            cd compiled
+            zip -9 -r MapChooserAdmin-v0.2.7-linuxsteamrt64.zip MapChooserAdmin
+          )
+          sha256sum compiled/MapChooserAdmin-v0.2.7-linuxsteamrt64.zip \
+            | tee compiled/MapChooserAdmin-v0.2.7-linuxsteamrt64.zip.sha256
+
+      - name: Upload build artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mapchooser-admin-v0.2.7-linuxsteamrt64
+          path: compiled/
+          retention-days: 7
+          if-no-files-found: warn
