@@ -65,51 +65,44 @@ unsafe extern "C" fn on_player_death(
 }
 
 pub fn recompute_active_viewers(config: &Config) {
-    let enabled = ENABLED_VIEWERS.load(Ordering::Acquire);
-    if enabled == 0 {
-        ACTIVE_VIEWERS.store(0, Ordering::Release);
-        return;
-    }
-
+    let mut enabled = 0_u64;
     let mut active = 0_u64;
     let max_clients = s2sdk::engine::GetMaxClients().clamp(0, MAX_TRACKED_CLIENTS as i32);
+
     for slot in 0..max_clients {
-        let bit = slot_bit(slot);
-        if enabled & bit == 0 {
-            continue;
-        }
-
         if !valid_human_viewer(slot) {
-            clear_viewer(slot);
             continue;
         }
 
+        let steam_id = s2sdk::clients::GetClientSteamID64(slot);
+        if steam_id == 0 || !preferences::is_enabled(steam_id) {
+            continue;
+        }
+
+        let bit = slot_bit(slot);
         let always = rust_admin::check_access(
             slot,
             ESP_ALWAYS_ACCESS_COMMAND,
             &config.admin_flag_all,
         )
         .unwrap_or(false);
-        if always {
-            active |= bit;
-            continue;
-        }
-
         let observer_access = rust_admin::check_access(
             slot,
             ESP_COMMAND,
             &config.admin_flag_death,
         )
         .unwrap_or(false);
-        if !observer_access {
-            clear_viewer(slot);
+
+        if !always && !observer_access {
             continue;
         }
-        if is_dead_or_spectator(slot) {
+
+        enabled |= bit;
+        if always || is_dead_or_spectator(slot) {
             active |= bit;
         }
     }
 
+    ENABLED_VIEWERS.store(enabled, Ordering::Release);
     ACTIVE_VIEWERS.store(active, Ordering::Release);
 }
-
