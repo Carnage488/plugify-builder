@@ -49,26 +49,6 @@ jobs:
         run: |
           set -euo pipefail
 
-          sha256sum \
-            mapchooser_admin_src/encoded/lib.rs.b64.00 \
-            mapchooser_admin_src/encoded/lib.rs.b64.01 \
-            mapchooser_admin_src/encoded/lib.rs.b64.02.00 \
-            mapchooser_admin_src/encoded/lib.rs.b64.02.01 \
-            mapchooser_admin_src/encoded/lib.rs.b64.02.02 \
-            mapchooser_admin_src/encoded/lib.rs.b64.02.03 \
-            mapchooser_admin_src/encoded/lib.rs.b64.02.04 \
-            mapchooser_admin_src/encoded/lib.rs.b64.02.05 \
-            mapchooser_admin_src/encoded/lib.rs.b64.02.06 \
-            mapchooser_admin_src/encoded/lib.rs.b64.03 \
-            mapchooser_admin_src/encoded/lib.rs.b64.04 \
-            mapchooser_admin_src/encoded/lib.rs.b64.05.00 \
-            mapchooser_admin_src/encoded/lib.rs.b64.05.01 \
-            mapchooser_admin_src/encoded/lib.rs.b64.05.02 \
-            mapchooser_admin_src/encoded/lib.rs.b64.05.03 \
-            mapchooser_admin_src/encoded/lib.rs.b64.05.04 \
-            mapchooser_admin_src/encoded/lib.rs.b64.05.05 \
-            mapchooser_admin_src/encoded/lib.rs.b64.05.06
-
           cat \
             mapchooser_admin_src/encoded/lib.rs.b64.00 \
             mapchooser_admin_src/encoded/lib.rs.b64.01 \
@@ -91,14 +71,61 @@ jobs:
             | tr -d '[:space:]' \
             | base64 -d > mapchooser_admin_src/src/lib.rs
 
-          sha256sum mapchooser_admin_src/src/lib.rs
           echo "56ab5936c261149ffbaf0dff03869d9a5eb7b2be1e754c8e5a51bb425b4155ee  mapchooser_admin_src/src/lib.rs" \
             | sha256sum --check
 
-          git config --global --add safe.directory "$GITHUB_WORKSPACE"
-          git checkout e7d070352ab83b32c203a3f9d824674537b63e28 -- rust_admin_esp_src/src/s2sdk
-          cp -a rust_admin_esp_src/src/s2sdk mapchooser_admin_src/src/s2sdk
-          test -f mapchooser_admin_src/src/s2sdk/mod.rs
+          cat \
+            mapchooser_admin_src/encoded/s2sdk.tar.gz.b64.00 \
+            mapchooser_admin_src/encoded/s2sdk.tar.gz.b64.01 \
+            mapchooser_admin_src/encoded/s2sdk.tar.gz.b64.02 \
+            mapchooser_admin_src/encoded/s2sdk.tar.gz.b64.03 \
+            mapchooser_admin_src/encoded/s2sdk.tar.gz.b64.04 \
+            mapchooser_admin_src/encoded/s2sdk.tar.gz.b64.05 \
+            mapchooser_admin_src/encoded/s2sdk.tar.gz.b64.06 \
+            mapchooser_admin_src/encoded/s2sdk.tar.gz.b64.07 \
+            mapchooser_admin_src/encoded/s2sdk.tar.gz.b64.08 \
+            mapchooser_admin_src/encoded/s2sdk.tar.gz.b64.09 \
+            mapchooser_admin_src/encoded/s2sdk.tar.gz.b64.10 \
+            mapchooser_admin_src/encoded/s2sdk.tar.gz.b64.11 \
+            mapchooser_admin_src/encoded/s2sdk.tar.gz.b64.12 \
+            mapchooser_admin_src/encoded/s2sdk.tar.gz.b64.13 \
+            mapchooser_admin_src/encoded/s2sdk.tar.gz.b64.14 \
+            | tr -d '[:space:]' \
+            | base64 -d > /tmp/mapchooser-s2sdk.tar.gz
+
+          echo "60558db8de4a72e8ada343cbda4cdc17ff7f434a2e162ebe521c0c078e01e238  /tmp/mapchooser-s2sdk.tar.gz" \
+            | sha256sum --check
+
+          rm -rf mapchooser_admin_src/src/s2sdk
+          mkdir -p mapchooser_admin_src/src/s2sdk
+          tar -xzf /tmp/mapchooser-s2sdk.tar.gz -C mapchooser_admin_src/src/s2sdk
+
+          cat > mapchooser_admin_src/src/s2sdk/mod.rs <<'EOF'
+          #![allow(non_camel_case_types, non_snake_case, non_upper_case_globals, dead_code, unused_imports, static_mut_refs)]
+          pub mod enums;
+          pub mod aliases;
+          pub mod delegates;
+          pub mod console;
+          pub mod panorama;
+          pub mod timers;
+          pub mod commands;
+          pub mod clients;
+          pub mod engine;
+          pub mod listeners;
+          #[allow(unused_imports)] pub use enums::*;
+          #[allow(unused_imports)] pub use aliases::*;
+          #[allow(unused_imports)] pub use delegates::*;
+          #[allow(unused_imports)] pub use console::*;
+          #[allow(unused_imports)] pub use panorama::*;
+          #[allow(unused_imports)] pub use timers::*;
+          #[allow(unused_imports)] pub use commands::*;
+          #[allow(unused_imports)] pub use clients::*;
+          #[allow(unused_imports)] pub use engine::*;
+          #[allow(unused_imports)] pub use listeners::*;
+          EOF
+
+          test -f mapchooser_admin_src/src/s2sdk/panorama.rs
+          test -f mapchooser_admin_src/src/s2sdk/timers.rs
 
       - name: Test and build release
         shell: bash -el {0}
