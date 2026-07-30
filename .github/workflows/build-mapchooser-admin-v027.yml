@@ -36,7 +36,7 @@ jobs:
         shell: bash -el {0}
         run: |
           sudo apt-get update
-          sudo apt-get install -y curl ca-certificates git build-essential pkg-config file binutils zip
+          sudo apt-get install -y curl ca-certificates git build-essential pkg-config file binutils zip python3
 
       - name: Install Rust
         shell: bash -el {0}
@@ -73,6 +73,17 @@ jobs:
 
           echo "56ab5936c261149ffbaf0dff03869d9a5eb7b2be1e754c8e5a51bb425b4155ee  mapchooser_admin_src/src/lib.rs" \
             | sha256sum --check
+
+          python3 - <<'PY'
+          from pathlib import Path
+          path = Path("mapchooser_admin_src/src/lib.rs")
+          source = path.read_text(encoding="utf-8")
+          old = "active.result.unwrap_or_else(|| active.tracked_result())"
+          new = "active.result.clone().unwrap_or_else(|| active.tracked_result())"
+          if source.count(old) != 1:
+              raise SystemExit("expected Yes/No result expression was not found exactly once")
+          path.write_text(source.replace(old, new), encoding="utf-8")
+          PY
 
           cat \
             mapchooser_admin_src/encoded/s2sdk.tar.gz.b64.00 \
