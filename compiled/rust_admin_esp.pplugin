@@ -1,8 +1,8 @@
 {
   "$schema": "https://raw.githubusercontent.com/untrustedmodders/plugify/refs/heads/main/schemas/plugin.schema.json",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "name": "rust_admin_esp",
-  "description": "Per-recipient administrator player-outline ESP for RustAdmin. Flag b is limited to dead/spectator viewers; root z may use it while alive.",
+  "description": "Per-recipient administrator player-outline ESP for RustAdmin with persistent SteamID64 preferences. Flag b is limited to dead/spectator viewers; root z may use it while alive.",
   "author": "Carnage",
   "website": "https://cs2alpha.com",
   "license": "MIT",

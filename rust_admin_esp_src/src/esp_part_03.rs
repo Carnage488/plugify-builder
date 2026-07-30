@@ -71,11 +71,27 @@ fn toggle(player_slot: i32) {
         return;
     }
 
+    let steam_id = s2sdk::clients::GetClientSteamID64(player_slot);
+    if steam_id == 0 {
+        chat(player_slot, STEAM_ID_UNAVAILABLE_MESSAGE);
+        return;
+    }
+
     let bit = slot_bit(player_slot);
-    if ENABLED_VIEWERS.load(Ordering::Acquire) & bit != 0 {
-        ENABLED_VIEWERS.fetch_and(!bit, Ordering::AcqRel);
-        ACTIVE_VIEWERS.fetch_and(!bit, Ordering::AcqRel);
-        chat(player_slot, DISABLED_MESSAGE);
+    if preferences::is_enabled(steam_id) {
+        match preferences::set_enabled(steam_id, false) {
+            Ok(_) => {
+                ENABLED_VIEWERS.fetch_and(!bit, Ordering::AcqRel);
+                ACTIVE_VIEWERS.fetch_and(!bit, Ordering::AcqRel);
+                chat(player_slot, DISABLED_MESSAGE);
+            }
+            Err(error) => {
+                println!(
+                    "[RustAdminESP] SteamID64={steam_id}: failed to disable persistent ESP: {error}"
+                );
+                chat(player_slot, SAVE_ERROR_MESSAGE);
+            }
+        }
         return;
     }
 
@@ -106,8 +122,17 @@ fn toggle(player_slot: i32) {
         return;
     }
 
-    ENABLED_VIEWERS.fetch_or(bit, Ordering::AcqRel);
-    ACTIVE_VIEWERS.fetch_or(bit, Ordering::AcqRel);
-    chat(player_slot, ENABLED_MESSAGE);
+    match preferences::set_enabled(steam_id, true) {
+        Ok(_) => {
+            ENABLED_VIEWERS.fetch_or(bit, Ordering::AcqRel);
+            ACTIVE_VIEWERS.fetch_or(bit, Ordering::AcqRel);
+            chat(player_slot, ENABLED_MESSAGE);
+        }
+        Err(error) => {
+            println!(
+                "[RustAdminESP] SteamID64={steam_id}: failed to enable persistent ESP: {error}"
+            );
+            chat(player_slot, SAVE_ERROR_MESSAGE);
+        }
+    }
 }
-

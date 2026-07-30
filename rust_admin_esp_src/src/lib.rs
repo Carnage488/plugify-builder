@@ -6,6 +6,7 @@ use std::sync::{Mutex, OnceLock};
 
 mod config;
 mod esp;
+mod preferences;
 mod rust_admin;
 mod s2sdk;
 
@@ -49,7 +50,7 @@ fn on_plugin_start() -> Result<(), Box<dyn Error>> {
 
     let config = CONFIG.get().expect("config initialized");
     println!(
-        "[RustAdminESP] v0.2.0 loaded; observer_flag={} always_flag={} CT={} T={}",
+        "[RustAdminESP] v0.2.1 loaded; observer_flag={} always_flag={} CT={} T={}",
         config.admin_flag_death,
         config.admin_flag_all,
         config.ct_color.entity_value(),
@@ -64,6 +65,11 @@ fn initialize() -> Result<(), Box<dyn Error>> {
     CONFIG
         .set(config)
         .map_err(|_| boxed_error("RustAdminESP config was already initialized"))?;
+
+    let saved_count = preferences::initialize().map_err(boxed_error)?;
+    println!(
+        "[RustAdminESP] loaded {saved_count} persistent ESP preference(s) from configs/rust_admin_esp_users.toml"
+    );
 
     esp::register_commands().map_err(boxed_error)?;
     COMMANDS_REGISTERED.store(true, Ordering::Release);
@@ -183,6 +189,7 @@ fn ensure_dependencies_linked() -> Result<(), String> {
             && s2sdk::clients::__s2sdk_IsFakeClient.is_some()
             && s2sdk::clients::__s2sdk_GetClientTeam.is_some()
             && s2sdk::clients::__s2sdk_GetClientPawn.is_some()
+            && s2sdk::clients::__s2sdk_GetClientSteamID64.is_some()
             && s2sdk::engine::__s2sdk_GetMaxClients.is_some()
             && s2sdk::entities::__s2sdk_EntPointerToEntHandle.is_some()
             && s2sdk::entities::__s2sdk_IsValidEntPointer.is_some()

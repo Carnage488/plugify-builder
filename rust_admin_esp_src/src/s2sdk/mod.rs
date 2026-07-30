@@ -97,6 +97,8 @@ pub mod clients {
     pub fn GetClientTeam(s:i32)->CSTeam{unsafe{__s2sdk_GetClientTeam.expect("GetClientTeam missing")(s)}}
     pub type _GetClientPawn = unsafe extern "C" fn(i32) -> usize; binding!(__s2sdk_GetClientPawn, _GetClientPawn);
     pub fn GetClientPawn(s:i32)->usize{unsafe{__s2sdk_GetClientPawn.expect("GetClientPawn missing")(s)}}
+    pub type _GetClientSteamID64 = unsafe extern "C" fn(i32) -> u64; binding!(__s2sdk_GetClientSteamID64, _GetClientSteamID64);
+    pub fn GetClientSteamID64(s:i32)->u64{unsafe{__s2sdk_GetClientSteamID64.expect("GetClientSteamID64 missing")(s)}}
 }
 
 pub mod engine {
