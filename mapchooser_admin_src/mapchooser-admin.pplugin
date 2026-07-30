@@ -1,0 +1,59 @@
+{
+  "$schema": "https://raw.githubusercontent.com/untrustedmodders/plugify/refs/heads/main/schemas/plugin.schema.json",
+  "version": "0.2.7",
+  "name": "mapchooser_admin",
+  "description": "RustAdmin map management: filtered manual changes and admin map votes for 1-5 maps.",
+  "author": "Carnage",
+  "website": "https://cs2alpha.com",
+  "license": "MIT",
+  "entry": "bin/mapchooser_admin",
+  "language": "rust",
+  "platforms": [
+    "linux_x64",
+    "steamrt_x64"
+  ],
+  "dependencies": [
+    {
+      "name": "s2sdk"
+    },
+    {
+      "name": "menu_core"
+    },
+    {
+      "name": "rust_admin"
+    },
+    {
+      "name": "mapchooser_core"
+    },
+    {
+      "name": "mapchooser_vote"
+    }
+  ],
+  "methods": [
+    {
+      "name": "MCA_GetApiVersion",
+      "funcName": "MCA_GetApiVersion_Exported",
+      "paramTypes": [],
+      "retType": {
+        "type": "int32"
+      }
+    },
+    {
+      "name": "MCA_IsAdminVoteActive",
+      "funcName": "MCA_IsAdminVoteActive_Exported",
+      "paramTypes": [],
+      "retType": {
+        "type": "bool"
+      }
+    },
+    {
+      "name": "MCA_HasPendingMapChange",
+      "funcName": "MCA_HasPendingMapChange_Exported",
+      "paramTypes": [],
+      "retType": {
+        "type": "bool"
+      }
+    }
+  ],
+  "classes": []
+}
