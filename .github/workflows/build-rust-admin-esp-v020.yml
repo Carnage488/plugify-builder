@@ -1,0 +1,100 @@
+name: Build RustAdmin ESP v0.2.0
+
+on:
+  push:
+    branches:
+      - main
+      - build/rust-admin-esp-v0.2.0
+    paths:
+      - rust_admin_esp_src/**
+      - .github/workflows/build-rust-admin-esp-v020.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build-linuxsteamrt64:
+    runs-on: ubuntu-latest
+    container:
+      image: registry.gitlab.steamos.cloud/steamrt/sniper/sdk:latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install tools
+        shell: bash -el {0}
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y curl ca-certificates git build-essential pkg-config cmake ninja-build clang libssl-dev file binutils zip
+
+      - name: Install Rust
+        shell: bash -el {0}
+        run: |
+          curl https://sh.rustup.rs -sSf | sh -s -- -y --profile minimal --default-toolchain stable
+          echo "$HOME/.cargo/bin" >> "$GITHUB_PATH"
+
+      - name: Build, validate, and publish result
+        shell: bash -el {0}
+        run: |
+          set +e
+          rm -rf compiled
+          mkdir -p compiled
+          cd rust_admin_esp_src
+          cargo build --release 2>&1 | tee ../compiled/cargo-build.log
+          BUILD_STATUS=${PIPESTATUS[0]}
+          cd ..
+          echo "$BUILD_STATUS" > compiled/build-status.txt
+
+          if [ "$BUILD_STATUS" -eq 0 ]; then
+            SO="rust_admin_esp_src/target/release/librust_admin_esp.so"
+            if [ ! -f "$SO" ]; then
+              echo "Build reported success but $SO is missing" | tee -a compiled/cargo-build.log
+              BUILD_STATUS=90
+              echo "$BUILD_STATUS" > compiled/build-status.txt
+            else
+              file "$SO" | tee compiled/file.txt
+              readelf -h "$SO" > compiled/readelf-header.txt
+              ldd "$SO" > compiled/ldd.txt 2>&1 || true
+              sha256sum "$SO" | tee compiled/rust_admin_esp.so.sha256
+              cp "$SO" compiled/rust_admin_esp.so
+              cp rust_admin_esp_src/rust_admin_esp.pplugin compiled/rust_admin_esp.pplugin
+              cp rust_admin_esp_src/configs/rust_admin_esp.toml compiled/rust_admin_esp.toml
+              (cd compiled && zip -9 rust-admin-esp-v0.2.0-linuxsteamrt64.zip rust_admin_esp.so rust_admin_esp.pplugin rust_admin_esp.toml rust_admin_esp.so.sha256 file.txt readelf-header.txt ldd.txt)
+            fi
+          fi
+
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f compiled
+          git commit -m "Build RustAdmin ESP v0.2.0 [skip ci]" || true
+          git push origin "HEAD:${GITHUB_REF_NAME}"
+
+          exit "$BUILD_STATUS"
+
+      - name: Upload artifact
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rust-admin-esp-v0.2.0-linuxsteamrt64
+          path: compiled/
+          retention-days: 7
+
+      - name: Publish temporary release
+        if: success()
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: rust-admin-esp-v0.2.0-build
+          name: RustAdmin ESP v0.2.0 Linux Steam Runtime build
+          prerelease: true
+          body: Automated Steam Runtime build for testing. Compilation and ELF validation succeeded; live CS2 runtime behavior is not certified by this build job.
+          files: |
+            compiled/rust-admin-esp-v0.2.0-linuxsteamrt64.zip
+            compiled/rust_admin_esp.so
+            compiled/rust_admin_esp.so.sha256

@@ -1,0 +1,10 @@
+# Permission that may use ESP while alive or dead/spectating.
+# Root z receives all RustAdmin permissions and therefore always passes.
+admin_flag_all = "z"
+
+# Permission that may enable ESP only while dead or in spectators.
+admin_flag_death = "b"
+
+# Team outline colors in #RRGGBB format.
+ct_color = "#4968F7"
+t_color = "#E2AD36"

@@ -1,0 +1,331 @@
+[1m[92m    Updating[0m git repository `https://github.com/untrustedmodders/rust-plugify`
+[1m[92m    Updating[0m crates.io index
+[1m[92m     Locking[0m 18 packages to latest compatible versions
+[1m[92m      Adding[0m toml v0.8.23 [1m[33m(available: v1.1.4+spec-1.1.0)[0m
+[1m[92m Downloading[0m crates ...
+[1m[92m  Downloaded[0m indexmap v2.14.0
+[1m[92m  Downloaded[0m toml_datetime v0.6.11
+[1m[92m  Downloaded[0m unicode-ident v1.0.24
+[1m[92m  Downloaded[0m serde_spanned v0.6.9
+[1m[92m  Downloaded[0m equivalent v1.0.2
+[1m[92m  Downloaded[0m toml_write v0.1.2
+[1m[92m  Downloaded[0m quote v1.0.47
+[1m[92m  Downloaded[0m serde v1.0.229
+[1m[92m  Downloaded[0m serde_core v1.0.229
+[1m[92m  Downloaded[0m toml v0.8.23
+[1m[92m  Downloaded[0m proc-macro2 v1.0.107
+[1m[92m  Downloaded[0m serde_derive v1.0.229
+[1m[92m  Downloaded[0m toml_edit v0.22.27
+[1m[92m  Downloaded[0m memchr v2.8.3
+[1m[92m  Downloaded[0m hashbrown v0.17.1
+[1m[92m  Downloaded[0m winnow v0.7.15
+[1m[92m  Downloaded[0m syn v3.0.3
+[1m[92m   Compiling[0m proc-macro2 v1.0.107
+[1m[92m   Compiling[0m quote v1.0.47
+[1m[92m   Compiling[0m unicode-ident v1.0.24
+[1m[92m   Compiling[0m serde_core v1.0.229
+[1m[92m   Compiling[0m serde v1.0.229
+[1m[92m   Compiling[0m equivalent v1.0.2
+[1m[92m   Compiling[0m hashbrown v0.17.1
+[1m[92m   Compiling[0m toml_write v0.1.2
+[1m[92m   Compiling[0m winnow v0.7.15
+[1m[92m   Compiling[0m indexmap v2.14.0
+[1m[92m   Compiling[0m syn v3.0.3
+[1m[92m   Compiling[0m plugify v1.4.2 (https://github.com/untrustedmodders/rust-plugify#5f7d5f4f)
+[1m[92m   Compiling[0m serde_derive v1.0.229
+[1m[92m   Compiling[0m toml_datetime v0.6.11
+[1m[92m   Compiling[0m serde_spanned v0.6.9
+[1m[92m   Compiling[0m toml_edit v0.22.27
+[1m[92m   Compiling[0m toml v0.8.23
+[1m[92m   Compiling[0m rust_admin_esp v0.2.0 (/__w/plugify-builder/plugify-builder/rust_admin_esp_src)
+[1m[33mwarning[0m[1m: creating a shared reference to mutable static[0m
+   [1m[94m--> [0msrc/lib.rs:171:9
+    [1m[94m|[0m
+[1m[94m171[0m [1m[94m|[0m         s2sdk::commands::__s2sdk_AddConsoleCommand.is_some()
+    [1m[94m|[0m         [1m[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m [1m[33mshared reference to mutable static[0m
+    [1m[94m|[0m
+    [1m[94m= [0m[1mnote[0m: shared references to mutable statics are dangerous; it's undefined behavior if the static is mutated or if a mutable reference is created for it while the shared reference lives
+    [1m[94m= [0m[1mnote[0m: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/static-mut-references.html>
+    [1m[94m= [0m[1mnote[0m: `#[warn(static_mut_refs)]` (part of `#[warn(rust_2024_compatibility)]`) on by default
+
+[1m[33mwarning[0m[1m: creating a shared reference to mutable static[0m
+   [1m[94m--> [0msrc/lib.rs:172:16
+    [1m[94m|[0m
+[1m[94m172[0m [1m[94m|[0m             && s2sdk::commands::__s2sdk_RemoveCommand.is_some()
+    [1m[94m|[0m                [1m[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m [1m[33mshared reference to mutable static[0m
+    [1m[94m|[0m
+    [1m[94m= [0m[1mnote[0m: shared references to mutable statics are dangerous; it's undefined behavior if the static is mutated or if a mutable reference is created for it while the shared reference lives
+    [1m[94m= [0m[1mnote[0m: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/static-mut-references.html>
+
+[1m[33mwarning[0m[1m: creating a shared reference to mutable static[0m
+   [1m[94m--> [0msrc/lib.rs:173:16
+    [1m[94m|[0m
+[1m[94m173[0m [1m[94m|[0m             && s2sdk::commands::__s2sdk_AddCommandListener.is_some()
+    [1m[94m|[0m                [1m[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m [1m[33mshared reference to mutable static[0m
+    [1m[94m|[0m
+    [1m[94m= [0m[1mnote[0m: shared references to mutable statics are dangerous; it's undefined behavior if the static is mutated or if a mutable reference is created for it while the shared reference lives
+    [1m[94m= [0m[1mnote[0m: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/static-mut-references.html>
+
+[1m[33mwarning[0m[1m: creating a shared reference to mutable static[0m
+   [1m[94m--> [0msrc/lib.rs:174:16
+    [1m[94m|[0m
+[1m[94m174[0m [1m[94m|[0m             && s2sdk::commands::__s2sdk_RemoveCommandListener.is_some()
+    [1m[94m|[0m                [1m[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m [1m[33mshared reference to mutable static[0m
+    [1m[94m|[0m
+    [1m[94m= [0m[1mnote[0m: shared references to mutable statics are dangerous; it's undefined behavior if the static is mutated or if a mutable reference is created for it while the shared reference lives
+    [1m[94m= [0m[1mnote[0m: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/static-mut-references.html>
+
+[1m[33mwarning[0m[1m: creating a shared reference to mutable static[0m
+   [1m[94m--> [0msrc/lib.rs:175:16
+    [1m[94m|[0m
+[1m[94m175[0m [1m[94m|[0m             && s2sdk::listeners::__s2sdk_OnServerCheckTransmit_Register.is_some()
+    [1m[94m|[0m                [1m[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m [1m[33mshared reference to mutable static[0m
+    [1m[94m|[0m
+    [1m[94m= [0m[1mnote[0m: shared references to mutable statics are dangerous; it's undefined behavior if the static is mutated or if a mutable reference is created for it while the shared reference lives
+    [1m[94m= [0m[1mnote[0m: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/static-mut-references.html>
+
+[1m[33mwarning[0m[1m: creating a shared reference to mutable static[0m
+   [1m[94m--> [0msrc/lib.rs:176:16
+    [1m[94m|[0m
+[1m[94m176[0m [1m[94m|[0m             && s2sdk::listeners::__s2sdk_OnServerCheckTransmit_Unregister.is_some()
+    [1m[94m|[0m                [1m[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m [1m[33mshared reference to mutable static[0m
+    [1m[94m|[0m
+    [1m[94m= [0m[1mnote[0m: shared references to mutable statics are dangerous; it's undefined behavior if the static is mutated or if a mutable reference is created for it while the shared reference lives
+    [1m[94m= [0m[1mnote[0m: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/static-mut-references.html>
+
+[1m[33mwarning[0m[1m: creating a shared reference to mutable static[0m
+   [1m[94m--> [0msrc/lib.rs:177:16
+    [1m[94m|[0m
+[1m[94m177[0m [1m[94m|[0m             && s2sdk::listeners::__s2sdk_OnClientDisconnect_Register.is_some()
+    [1m[94m|[0m                [1m[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m [1m[33mshared reference to mutable static[0m
+    [1m[94m|[0m
+    [1m[94m= [0m[1mnote[0m: shared references to mutable statics are dangerous; it's undefined behavior if the static is mutated or if a mutable reference is created for it while the shared reference lives
+    [1m[94m= [0m[1mnote[0m: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/static-mut-references.html>
+
+[1m[33mwarning[0m[1m: creating a shared reference to mutable static[0m
+   [1m[94m--> [0msrc/lib.rs:178:16
+    [1m[94m|[0m
+[1m[94m178[0m [1m[94m|[0m             && s2sdk::listeners::__s2sdk_OnClientDisconnect_Unregister.is_some()
+    [1m[94m|[0m                [1m[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m [1m[33mshared reference to mutable static[0m
+    [1m[94m|[0m
+    [1m[94m= [0m[1mnote[0m: shared references to mutable statics are dangerous; it's undefined behavior if the static is mutated or if a mutable reference is created for it while the shared reference lives
+    [1m[94m= [0m[1mnote[0m: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/static-mut-references.html>
+
+[1m[33mwarning[0m[1m: creating a shared reference to mutable static[0m
+   [1m[94m--> [0msrc/lib.rs:179:16
+    [1m[94m|[0m
+[1m[94m179[0m [1m[94m|[0m             && s2sdk::listeners::__s2sdk_OnMapEnd_Register.is_some()
+    [1m[94m|[0m                [1m[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m [1m[33mshared reference to mutable static[0m
+    [1m[94m|[0m
+    [1m[94m= [0m[1mnote[0m: shared references to mutable statics are dangerous; it's undefined behavior if the static is mutated or if a mutable reference is created for it while the shared reference lives
+    [1m[94m= [0m[1mnote[0m: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/static-mut-references.html>
+
+[1m[33mwarning[0m[1m: creating a shared reference to mutable static[0m
+   [1m[94m--> [0msrc/lib.rs:180:16
+    [1m[94m|[0m
+[1m[94m180[0m [1m[94m|[0m             && s2sdk::listeners::__s2sdk_OnMapEnd_Unregister.is_some()
+    [1m[94m|[0m                [1m[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m [1m[33mshared reference to mutable static[0m
+    [1m[94m|[0m
+    [1m[94m= [0m[1mnote[0m: shared references to mutable statics are dangerous; it's undefined behavior if the static is mutated or if a mutable reference is created for it while the shared reference lives
+    [1m[94m= [0m[1mnote[0m: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/static-mut-references.html>
+
+[1m[33mwarning[0m[1m: creating a shared reference to mutable static[0m
+   [1m[94m--> [0msrc/lib.rs:181:16
+    [1m[94m|[0m
+[1m[94m181[0m [1m[94m|[0m             && s2sdk::clients::__s2sdk_IsClientInGame.is_some()
+    [1m[94m|[0m                [1m[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m [1m[33mshared reference to mutable static[0m
+    [1m[94m|[0m
+    [1m[94m= [0m[1mnote[0m: shared references to mutable statics are dangerous; it's undefined behavior if the static is mutated or if a mutable reference is created for it while the shared reference lives
+    [1m[94m= [0m[1mnote[0m: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/static-mut-references.html>
+
+[1m[33mwarning[0m[1m: creating a shared reference to mutable static[0m
+   [1m[94m--> [0msrc/lib.rs:182:16
+    [1m[94m|[0m
+[1m[94m182[0m [1m[94m|[0m             && s2sdk::clients::__s2sdk_IsClientAlive.is_some()
+    [1m[94m|[0m                [1m[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m [1m[33mshared reference to mutable static[0m
+    [1m[94m|[0m
+    [1m[94m= [0m[1mnote[0m: shared references to mutable statics are dangerous; it's undefined behavior if the static is mutated or if a mutable reference is created for it while the shared reference lives
+    [1m[94m= [0m[1mnote[0m: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/static-mut-references.html>
+
+[1m[33mwarning[0m[1m: creating a shared reference to mutable static[0m
+   [1m[94m--> [0msrc/lib.rs:183:16
+    [1m[94m|[0m
+[1m[94m183[0m [1m[94m|[0m             && s2sdk::clients::__s2sdk_IsFakeClient.is_some()
+    [1m[94m|[0m                [1m[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m [1m[33mshared reference to mutable static[0m
+    [1m[94m|[0m
+    [1m[94m= [0m[1mnote[0m: shared references to mutable statics are dangerous; it's undefined behavior if the static is mutated or if a mutable reference is created for it while the shared reference lives
+    [1m[94m= [0m[1mnote[0m: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/static-mut-references.html>
+
+[1m[33mwarning[0m[1m: creating a shared reference to mutable static[0m
+   [1m[94m--> [0msrc/lib.rs:184:16
+    [1m[94m|[0m
+[1m[94m184[0m [1m[94m|[0m             && s2sdk::clients::__s2sdk_GetClientTeam.is_some()
+    [1m[94m|[0m                [1m[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m [1m[33mshared reference to mutable static[0m
+    [1m[94m|[0m
+    [1m[94m= [0m[1mnote[0m: shared references to mutable statics are dangerous; it's undefined behavior if the static is mutated or if a mutable reference is created for it while the shared reference lives
+    [1m[94m= [0m[1mnote[0m: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/static-mut-references.html>
+
+[1m[33mwarning[0m[1m: creating a shared reference to mutable static[0m
+   [1m[94m--> [0msrc/lib.rs:185:16
+    [1m[94m|[0m
+[1m[94m185[0m [1m[94m|[0m             && s2sdk::clients::__s2sdk_GetClientPawn.is_some()
+    [1m[94m|[0m                [1m[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m [1m[33mshared reference to mutable static[0m
+    [1m[94m|[0m
+    [1m[94m= [0m[1mnote[0m: shared references to mutable statics are dangerous; it's undefined behavior if the static is mutated or if a mutable reference is created for it while the shared reference lives
+    [1m[94m= [0m[1mnote[0m: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/static-mut-references.html>
+
+[1m[33mwarning[0m[1m: creating a shared reference to mutable static[0m
+   [1m[94m--> [0msrc/lib.rs:186:16
+    [1m[94m|[0m
+[1m[94m186[0m [1m[94m|[0m             && s2sdk::engine::__s2sdk_GetMaxClients.is_some()
+    [1m[94m|[0m                [1m[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m [1m[33mshared reference to mutable static[0m
+    [1m[94m|[0m
+    [1m[94m= [0m[1mnote[0m: shared references to mutable statics are dangerous; it's undefined behavior if the static is mutated or if a mutable reference is created for it while the shared reference lives
+    [1m[94m= [0m[1mnote[0m: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/static-mut-references.html>
+
+[1m[33mwarning[0m[1m: creating a shared reference to mutable static[0m
+   [1m[94m--> [0msrc/lib.rs:187:16
+    [1m[94m|[0m
+[1m[94m187[0m [1m[94m|[0m             && s2sdk::entities::__s2sdk_EntPointerToEntHandle.is_some()
+    [1m[94m|[0m                [1m[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m [1m[33mshared reference to mutable static[0m
+    [1m[94m|[0m
+    [1m[94m= [0m[1mnote[0m: shared references to mutable statics are dangerous; it's undefined behavior if the static is mutated or if a mutable reference is created for it while the shared reference lives
+    [1m[94m= [0m[1mnote[0m: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/static-mut-references.html>
+
+[1m[33mwarning[0m[1m: creating a shared reference to mutable static[0m
+   [1m[94m--> [0msrc/lib.rs:188:16
+    [1m[94m|[0m
+[1m[94m188[0m [1m[94m|[0m             && s2sdk::entities::__s2sdk_IsValidEntPointer.is_some()
+    [1m[94m|[0m                [1m[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m [1m[33mshared reference to mutable static[0m
+    [1m[94m|[0m
+    [1m[94m= [0m[1mnote[0m: shared references to mutable statics are dangerous; it's undefined behavior if the static is mutated or if a mutable reference is created for it while the shared reference lives
+    [1m[94m= [0m[1mnote[0m: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/static-mut-references.html>
+
+[1m[33mwarning[0m[1m: creating a shared reference to mutable static[0m
+   [1m[94m--> [0msrc/lib.rs:189:16
+    [1m[94m|[0m
+[1m[94m189[0m [1m[94m|[0m             && s2sdk::entities::__s2sdk_IsValidEntHandle.is_some()
+    [1m[94m|[0m                [1m[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m [1m[33mshared reference to mutable static[0m
+    [1m[94m|[0m
+    [1m[94m= [0m[1mnote[0m: shared references to mutable statics are dangerous; it's undefined behavior if the static is mutated or if a mutable reference is created for it while the shared reference lives
+    [1m[94m= [0m[1mnote[0m: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/static-mut-references.html>
+
+[1m[33mwarning[0m[1m: creating a shared reference to mutable static[0m
+   [1m[94m--> [0msrc/lib.rs:190:16
+    [1m[94m|[0m
+[1m[94m190[0m [1m[94m|[0m             && s2sdk::entities::__s2sdk_CreateEntityByName.is_some()
+    [1m[94m|[0m                [1m[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m [1m[33mshared reference to mutable static[0m
+    [1m[94m|[0m
+    [1m[94m= [0m[1mnote[0m: shared references to mutable statics are dangerous; it's undefined behavior if the static is mutated or if a mutable reference is created for it while the shared reference lives
+    [1m[94m= [0m[1mnote[0m: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/static-mut-references.html>
+
+[1m[33mwarning[0m[1m: creating a shared reference to mutable static[0m
+   [1m[94m--> [0msrc/lib.rs:191:16
+    [1m[94m|[0m
+[1m[94m191[0m [1m[94m|[0m             && s2sdk::entities::__s2sdk_DispatchSpawn2.is_some()
+    [1m[94m|[0m                [1m[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m [1m[33mshared reference to mutable static[0m
+    [1m[94m|[0m
+    [1m[94m= [0m[1mnote[0m: shared references to mutable statics are dangerous; it's undefined behavior if the static is mutated or if a mutable reference is created for it while the shared reference lives
+    [1m[94m= [0m[1mnote[0m: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/static-mut-references.html>
+
+[1m[33mwarning[0m[1m: creating a shared reference to mutable static[0m
+   [1m[94m--> [0msrc/lib.rs:192:16
+    [1m[94m|[0m
+[1m[94m192[0m [1m[94m|[0m             && s2sdk::entities::__s2sdk_RemoveEntity.is_some()
+    [1m[94m|[0m                [1m[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m [1m[33mshared reference to mutable static[0m
+    [1m[94m|[0m
+    [1m[94m= [0m[1mnote[0m: shared references to mutable statics are dangerous; it's undefined behavior if the static is mutated or if a mutable reference is created for it while the shared reference lives
+    [1m[94m= [0m[1mnote[0m: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/static-mut-references.html>
+
+[1m[33mwarning[0m[1m: creating a shared reference to mutable static[0m
+   [1m[94m--> [0msrc/lib.rs:193:16
+    [1m[94m|[0m
+[1m[94m193[0m [1m[94m|[0m             && s2sdk::entities::__s2sdk_GetEntityModel.is_some()
+    [1m[94m|[0m                [1m[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m [1m[33mshared reference to mutable static[0m
+    [1m[94m|[0m
+    [1m[94m= [0m[1mnote[0m: shared references to mutable statics are dangerous; it's undefined behavior if the static is mutated or if a mutable reference is created for it while the shared reference lives
+    [1m[94m= [0m[1mnote[0m: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/static-mut-references.html>
+
+[1m[33mwarning[0m[1m: creating a shared reference to mutable static[0m
+   [1m[94m--> [0msrc/lib.rs:194:16
+    [1m[94m|[0m
+[1m[94m194[0m [1m[94m|[0m             && s2sdk::entities::__s2sdk_AcceptEntityInput.is_some()
+    [1m[94m|[0m                [1m[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m [1m[33mshared reference to mutable static[0m
+    [1m[94m|[0m
+    [1m[94m= [0m[1mnote[0m: shared references to mutable statics are dangerous; it's undefined behavior if the static is mutated or if a mutable reference is created for it while the shared reference lives
+    [1m[94m= [0m[1mnote[0m: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/static-mut-references.html>
+
+[1m[33mwarning[0m[1m: creating a shared reference to mutable static[0m
+   [1m[94m--> [0msrc/lib.rs:195:16
+    [1m[94m|[0m
+[1m[94m195[0m [1m[94m|[0m             && s2sdk::events::__s2sdk_HookEvent.is_some()
+    [1m[94m|[0m                [1m[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m [1m[33mshared reference to mutable static[0m
+    [1m[94m|[0m
+    [1m[94m= [0m[1mnote[0m: shared references to mutable statics are dangerous; it's undefined behavior if the static is mutated or if a mutable reference is created for it while the shared reference lives
+    [1m[94m= [0m[1mnote[0m: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/static-mut-references.html>
+
+[1m[33mwarning[0m[1m: creating a shared reference to mutable static[0m
+   [1m[94m--> [0msrc/lib.rs:196:16
+    [1m[94m|[0m
+[1m[94m196[0m [1m[94m|[0m             && s2sdk::events::__s2sdk_UnhookEvent.is_some()
+    [1m[94m|[0m                [1m[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m [1m[33mshared reference to mutable static[0m
+    [1m[94m|[0m
+    [1m[94m= [0m[1mnote[0m: shared references to mutable statics are dangerous; it's undefined behavior if the static is mutated or if a mutable reference is created for it while the shared reference lives
+    [1m[94m= [0m[1mnote[0m: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/static-mut-references.html>
+
+[1m[33mwarning[0m[1m: creating a shared reference to mutable static[0m
+   [1m[94m--> [0msrc/lib.rs:197:16
+    [1m[94m|[0m
+[1m[94m197[0m [1m[94m|[0m             && s2sdk::events::__s2sdk_GetEventPlayerSlot.is_some()
+    [1m[94m|[0m                [1m[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m [1m[33mshared reference to mutable static[0m
+    [1m[94m|[0m
+    [1m[94m= [0m[1mnote[0m: shared references to mutable statics are dangerous; it's undefined behavior if the static is mutated or if a mutable reference is created for it while the shared reference lives
+    [1m[94m= [0m[1mnote[0m: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/static-mut-references.html>
+
+[1m[33mwarning[0m[1m: creating a shared reference to mutable static[0m
+   [1m[94m--> [0msrc/lib.rs:198:16
+    [1m[94m|[0m
+[1m[94m198[0m [1m[94m|[0m             && s2sdk::transmit::__s2sdk_GetTransmitInfoPlayerSlot.is_some()
+    [1m[94m|[0m                [1m[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m [1m[33mshared reference to mutable static[0m
+    [1m[94m|[0m
+    [1m[94m= [0m[1mnote[0m: shared references to mutable statics are dangerous; it's undefined behavior if the static is mutated or if a mutable reference is created for it while the shared reference lives
+    [1m[94m= [0m[1mnote[0m: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/static-mut-references.html>
+
+[1m[33mwarning[0m[1m: creating a shared reference to mutable static[0m
+   [1m[94m--> [0msrc/lib.rs:199:16
+    [1m[94m|[0m
+[1m[94m199[0m [1m[94m|[0m             && s2sdk::transmit::__s2sdk_ClearTransmitInfoEntity.is_some()
+    [1m[94m|[0m                [1m[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m [1m[33mshared reference to mutable static[0m
+    [1m[94m|[0m
+    [1m[94m= [0m[1mnote[0m: shared references to mutable statics are dangerous; it's undefined behavior if the static is mutated or if a mutable reference is created for it while the shared reference lives
+    [1m[94m= [0m[1mnote[0m: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/static-mut-references.html>
+
+[1m[33mwarning[0m[1m: creating a shared reference to mutable static[0m
+   [1m[94m--> [0msrc/lib.rs:200:16
+    [1m[94m|[0m
+[1m[94m200[0m [1m[94m|[0m             && s2sdk::console::__s2sdk_PrintToChatColored.is_some()
+    [1m[94m|[0m                [1m[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m [1m[33mshared reference to mutable static[0m
+    [1m[94m|[0m
+    [1m[94m= [0m[1mnote[0m: shared references to mutable statics are dangerous; it's undefined behavior if the static is mutated or if a mutable reference is created for it while the shared reference lives
+    [1m[94m= [0m[1mnote[0m: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/static-mut-references.html>
+
+[1m[33mwarning[0m[1m: creating a shared reference to mutable static[0m
+   [1m[94m--> [0msrc/lib.rs:201:16
+    [1m[94m|[0m
+[1m[94m201[0m [1m[94m|[0m             && s2sdk::console::__s2sdk_ReplyToCommand.is_some()
+    [1m[94m|[0m                [1m[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m [1m[33mshared reference to mutable static[0m
+    [1m[94m|[0m
+    [1m[94m= [0m[1mnote[0m: shared references to mutable statics are dangerous; it's undefined behavior if the static is mutated or if a mutable reference is created for it while the shared reference lives
+    [1m[94m= [0m[1mnote[0m: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/static-mut-references.html>
+
+[1m[33mwarning[0m[1m: creating a shared reference to mutable static[0m
+ [1m[94m--> [0msrc/rust_admin.rs:4:14
+  [1m[94m|[0m
+[1m[94m4[0m [1m[94m|[0m     unsafe { __rust_admin_AdminCheckAccess.is_some() }
+  [1m[94m|[0m              [1m[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m [1m[33mshared reference to mutable static[0m
+  [1m[94m|[0m
+  [1m[94m= [0m[1mnote[0m: shared references to mutable statics are dangerous; it's undefined behavior if the static is mutated or if a mutable reference is created for it while the shared reference lives
+  [1m[94m= [0m[1mnote[0m: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/static-mut-references.html>
+
+[1m[33mwarning[0m: `rust_admin_esp` (lib) generated 32 warnings
+[1m[92m    Finished[0m `release` profile [optimized] target(s) in 11.05s
