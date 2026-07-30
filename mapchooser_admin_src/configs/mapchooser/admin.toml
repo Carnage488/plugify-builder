@@ -1,0 +1,24 @@
+# MapChooserAdmin
+
+# RustAdmin permission and compact SourceMod-style fallback flags.
+# Multiple flags are written without separators, for example "bg"; all listed flags are required.
+# Do not leave default_flags empty: RustAdmin treats an empty mask as public access.
+permission = "mapchooser.admin.maps"
+default_flags = "g"
+
+# Position of "Управление картами" in !admin.
+menu_order = 50
+
+# Duration of a one-map native Yes/No vote.
+vote_duration_seconds = 30.0
+
+# Before any admin vote, warn players in chat and wait this many seconds.
+# Set to 0 to start immediately.
+vote_warning_seconds = 5
+
+# Selection and pagination limits. CS2 menu digits allow at most 5 map rows here.
+max_vote_maps = 5
+items_per_page = 5
+
+# Delay after round termination before the actual map change.
+change_delay_seconds = 2.0
