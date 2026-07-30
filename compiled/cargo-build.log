@@ -3,8 +3,8 @@
 [1m[92m   Compiling[0m quote v1.0.47
 [1m[92m   Compiling[0m serde_core v1.0.229
 [1m[92m   Compiling[0m serde v1.0.229
-[1m[92m   Compiling[0m hashbrown v0.17.1
 [1m[92m   Compiling[0m equivalent v1.0.2
+[1m[92m   Compiling[0m hashbrown v0.17.1
 [1m[92m   Compiling[0m toml_write v0.1.2
 [1m[92m   Compiling[0m winnow v0.7.15
 [1m[92m   Compiling[0m indexmap v2.14.0
@@ -315,4 +315,4 @@
   [1m[94m= [0m[1mnote[0m: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/static-mut-references.html>
 
 [1m[33mwarning[0m: `rust_admin_esp` (lib) generated 33 warnings
-[1m[92m    Finished[0m `release` profile [optimized] target(s) in 10.77s
+[1m[92m    Finished[0m `release` profile [optimized] target(s) in 10.40s
