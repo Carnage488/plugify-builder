@@ -31,7 +31,7 @@ jobs:
         shell: bash -el {0}
         run: |
           sudo apt-get update
-          sudo apt-get install -y curl ca-certificates git build-essential pkg-config cmake ninja-build clang libssl-dev file binutils
+          sudo apt-get install -y curl ca-certificates git build-essential pkg-config cmake ninja-build clang libssl-dev file binutils zip
 
       - name: Install Rust
         shell: bash -el {0}
@@ -65,6 +65,7 @@ jobs:
               cp "$SO" compiled/rust_admin_esp.so
               cp rust_admin_esp_src/rust_admin_esp.pplugin compiled/rust_admin_esp.pplugin
               cp rust_admin_esp_src/configs/rust_admin_esp.toml compiled/rust_admin_esp.toml
+              (cd compiled && zip -9 rust-admin-esp-v0.2.0-linuxsteamrt64.zip rust_admin_esp.so rust_admin_esp.pplugin rust_admin_esp.toml rust_admin_esp.so.sha256 file.txt readelf-header.txt ldd.txt)
             fi
           fi
 
@@ -84,3 +85,16 @@ jobs:
           name: rust-admin-esp-v0.2.0-linuxsteamrt64
           path: compiled/
           retention-days: 7
+
+      - name: Publish temporary release
+        if: success()
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: rust-admin-esp-v0.2.0-build
+          name: RustAdmin ESP v0.2.0 Linux Steam Runtime build
+          prerelease: true
+          body: Automated Steam Runtime build for testing. Compilation and ELF validation succeeded; live CS2 runtime behavior is not certified by this build job.
+          files: |
+            compiled/rust-admin-esp-v0.2.0-linuxsteamrt64.zip
+            compiled/rust_admin_esp.so
+            compiled/rust_admin_esp.so.sha256
