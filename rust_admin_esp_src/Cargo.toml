@@ -1,0 +1,12 @@
+[package]
+name = "rust_admin_esp"
+version = "0.2.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+plugify = { git = "https://github.com/untrustedmodders/rust-plugify" }
+serde = { version = "1", features = ["derive"] }
+toml = "0.8"
