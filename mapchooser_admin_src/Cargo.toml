@@ -1,0 +1,14 @@
+[package]
+name = "mapchooser-admin"
+version = "0.2.7"
+edition = "2024"
+rust-version = "1.85"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+plugify = { git = "https://github.com/untrustedmodders/rust-plugify" }
+
+serde = { version = "1", features = ["derive"] }
+toml = "0.8"
