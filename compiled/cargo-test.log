@@ -1,18 +1,40 @@
+[1m[92m    Updating[0m git repository `https://github.com/untrustedmodders/rust-plugify`
+[1m[92m    Updating[0m crates.io index
+[1m[92m     Locking[0m 18 packages to latest compatible versions
+[1m[92m      Adding[0m toml v0.8.23 [1m[33m(available: v1.1.4+spec-1.1.0)[0m
+[1m[92m Downloading[0m crates ...
+[1m[92m  Downloaded[0m proc-macro2 v1.0.107
+[1m[92m  Downloaded[0m equivalent v1.0.2
+[1m[92m  Downloaded[0m toml_write v0.1.2
+[1m[92m  Downloaded[0m toml_datetime v0.6.11
+[1m[92m  Downloaded[0m serde_spanned v0.6.9
+[1m[92m  Downloaded[0m toml v0.8.23
+[1m[92m  Downloaded[0m quote v1.0.47
+[1m[92m  Downloaded[0m serde_derive v1.0.229
+[1m[92m  Downloaded[0m unicode-ident v1.0.24
+[1m[92m  Downloaded[0m serde_core v1.0.229
+[1m[92m  Downloaded[0m memchr v2.8.3
+[1m[92m  Downloaded[0m hashbrown v0.17.1
+[1m[92m  Downloaded[0m toml_edit v0.22.27
+[1m[92m  Downloaded[0m serde v1.0.229
+[1m[92m  Downloaded[0m indexmap v2.14.0
+[1m[92m  Downloaded[0m winnow v0.7.15
+[1m[92m  Downloaded[0m syn v3.0.3
 [1m[92m   Compiling[0m proc-macro2 v1.0.107
-[1m[92m   Compiling[0m unicode-ident v1.0.24
 [1m[92m   Compiling[0m quote v1.0.47
+[1m[92m   Compiling[0m unicode-ident v1.0.24
 [1m[92m   Compiling[0m serde_core v1.0.229
 [1m[92m   Compiling[0m serde v1.0.229
 [1m[92m   Compiling[0m hashbrown v0.17.1
 [1m[92m   Compiling[0m equivalent v1.0.2
-[1m[92m   Compiling[0m toml_write v0.1.2
 [1m[92m   Compiling[0m winnow v0.7.15
 [1m[92m   Compiling[0m indexmap v2.14.0
 [1m[92m   Compiling[0m syn v3.0.3
+[1m[92m   Compiling[0m toml_write v0.1.2
 [1m[92m   Compiling[0m plugify v1.4.2 (https://github.com/untrustedmodders/rust-plugify#5f7d5f4f)
 [1m[92m   Compiling[0m serde_derive v1.0.229
-[1m[92m   Compiling[0m toml_datetime v0.6.11
 [1m[92m   Compiling[0m serde_spanned v0.6.9
+[1m[92m   Compiling[0m toml_datetime v0.6.11
 [1m[92m   Compiling[0m toml_edit v0.22.27
 [1m[92m   Compiling[0m toml v0.8.23
 [1m[92m   Compiling[0m rust_admin_esp v0.2.1 (/__w/plugify-builder/plugify-builder/rust_admin_esp_src)
@@ -314,5 +336,16 @@
   [1m[94m= [0m[1mnote[0m: shared references to mutable statics are dangerous; it's undefined behavior if the static is mutated or if a mutable reference is created for it while the shared reference lives
   [1m[94m= [0m[1mnote[0m: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/static-mut-references.html>
 
-[1m[33mwarning[0m: `rust_admin_esp` (lib) generated 33 warnings
-[1m[92m    Finished[0m `release` profile [optimized] target(s) in 10.77s
+[1m[33mwarning[0m: `rust_admin_esp` (lib test) generated 33 warnings
+[1m[92m    Finished[0m `test` profile [unoptimized + debuginfo] target(s) in 8.43s
+[1m[92m     Running[0m unittests src/lib.rs (target/debug/deps/rust_admin_esp-8b5e3dc832749842)
+
+running 5 tests
+test config::tests::parses_colors ... ok
+test config::tests::rejects_non_sourcemod_flags ... ok
+test esp::tests::chat_color_tags_are_converted_to_cs2_control_codes ... ok
+test esp::tests::slot_bit_rejects_out_of_range_slots ... ok
+test preferences::tests::preference_file_serializes_sorted_ids ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
