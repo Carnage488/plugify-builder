@@ -8,6 +8,12 @@ on:
     paths:
       - rust_admin_esp_src/**
       - .github/workflows/build-rust-admin-esp-v020.yml
+  pull_request:
+    branches:
+      - main
+    paths:
+      - rust_admin_esp_src/**
+      - .github/workflows/build-rust-admin-esp-v020.yml
   workflow_dispatch:
 
 permissions:
@@ -39,7 +45,7 @@ jobs:
           curl https://sh.rustup.rs -sSf | sh -s -- -y --profile minimal --default-toolchain stable
           echo "$HOME/.cargo/bin" >> "$GITHUB_PATH"
 
-      - name: Build, validate, and publish result
+      - name: Build and validate
         shell: bash -el {0}
         run: |
           set +e
@@ -69,14 +75,18 @@ jobs:
             fi
           fi
 
+          exit "$BUILD_STATUS"
+
+      - name: Commit result to branch
+        if: success() && github.event_name == 'push'
+        shell: bash -el {0}
+        run: |
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -f compiled
           git commit -m "Build RustAdmin ESP v0.2.0 [skip ci]" || true
           git push origin "HEAD:${GITHUB_REF_NAME}"
-
-          exit "$BUILD_STATUS"
 
       - name: Upload artifact
         if: success()
@@ -87,7 +97,7 @@ jobs:
           retention-days: 7
 
       - name: Publish temporary release
-        if: success()
+        if: success() && github.event_name == 'push'
         uses: softprops/action-gh-release@v2
         with:
           tag_name: rust-admin-esp-v0.2.0-build
