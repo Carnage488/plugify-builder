@@ -9,6 +9,9 @@ on:
       - .github/workflows/build-rust-admin-esp-v020.yml
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
   CARGO_TERM_COLOR: always
@@ -22,6 +25,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          ref: build/rust-admin-esp-v0.2.0
 
       - name: Install tools
         shell: bash -el {0}
@@ -35,38 +40,47 @@ jobs:
           curl https://sh.rustup.rs -sSf | sh -s -- -y --profile minimal --default-toolchain stable
           echo "$HOME/.cargo/bin" >> "$GITHUB_PATH"
 
-      - name: Build release
+      - name: Build, validate, and publish result
         shell: bash -el {0}
         run: |
+          set +e
+          mkdir -p compiled
           cd rust_admin_esp_src
-          cargo build --release
+          cargo build --release 2>&1 | tee ../compiled/cargo-build.log
+          BUILD_STATUS=${PIPESTATUS[0]}
+          cd ..
+          echo "$BUILD_STATUS" > compiled/build-status.txt
 
-      - name: Validate binary
-        shell: bash -el {0}
-        run: |
-          cd rust_admin_esp_src
-          SO="target/release/librust_admin_esp.so"
-          test -f "$SO"
-          file "$SO"
-          readelf -h "$SO"
-          ldd "$SO" || true
-          sha256sum "$SO" | tee rust_admin_esp.so.sha256
+          if [ "$BUILD_STATUS" -eq 0 ]; then
+            SO="rust_admin_esp_src/target/release/librust_admin_esp.so"
+            if [ ! -f "$SO" ]; then
+              echo "Build reported success but $SO is missing" | tee -a compiled/cargo-build.log
+              BUILD_STATUS=90
+              echo "$BUILD_STATUS" > compiled/build-status.txt
+            else
+              file "$SO" | tee compiled/file.txt
+              readelf -h "$SO" > compiled/readelf-header.txt
+              ldd "$SO" > compiled/ldd.txt 2>&1 || true
+              sha256sum "$SO" | tee compiled/rust_admin_esp.so.sha256
+              cp "$SO" compiled/rust_admin_esp.so
+              cp rust_admin_esp_src/rust_admin_esp.pplugin compiled/rust_admin_esp.pplugin
+              cp rust_admin_esp_src/configs/rust_admin_esp.toml compiled/rust_admin_esp.toml
+            fi
+          fi
 
-      - name: Prepare artifact
-        shell: bash -el {0}
-        run: |
-          mkdir -p output/csgo/addons/plugify/envs/plugins/bin
-          mkdir -p output/csgo/addons/plugify/envs/rust_admin_esp
-          mkdir -p output/csgo/addons/plugify/configs
-          cp rust_admin_esp_src/target/release/librust_admin_esp.so output/csgo/addons/plugify/envs/plugins/bin/rust_admin_esp.so
-          cp rust_admin_esp_src/rust_admin_esp.pplugin output/csgo/addons/plugify/envs/rust_admin_esp/rust_admin_esp.pplugin
-          cp rust_admin_esp_src/configs/rust_admin_esp.toml output/csgo/addons/plugify/configs/rust_admin_esp.toml
-          cp rust_admin_esp_src/rust_admin_esp.so.sha256 output/
-          find output -type f -print
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f compiled
+          git commit -m "Build RustAdmin ESP v0.2.0 [skip ci]" || true
+          git push origin HEAD:build/rust-admin-esp-v0.2.0
+
+          exit "$BUILD_STATUS"
 
       - name: Upload artifact
+        if: success()
         uses: actions/upload-artifact@v4
         with:
           name: rust-admin-esp-v0.2.0-linuxsteamrt64
-          path: output/
+          path: compiled/
           retention-days: 7
