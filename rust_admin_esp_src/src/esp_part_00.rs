@@ -1,4 +1,4 @@
-use crate::{config::Config, rust_admin, s2sdk};
+use crate::{config::Config, preferences, rust_admin, s2sdk};
 use plugify::{Any, Arr, Str, Var};
 use std::collections::hash_map::DefaultHasher;
 use std::hash::{Hash, Hasher};
@@ -20,6 +20,10 @@ const NO_ACCESS_MESSAGE: &str =
     " {RED}[ESP]{DEFAULT} У вас нет доступа к ESP";
 const OBSERVER_ONLY_MESSAGE: &str =
     " {RED}[ESP]{DEFAULT} ESP с вашим флагом доступен только после смерти или в наблюдателях";
+const SAVE_ERROR_MESSAGE: &str =
+    " {RED}[ESP]{DEFAULT} Не удалось сохранить настройку ESP";
+const STEAM_ID_UNAVAILABLE_MESSAGE: &str =
+    " {RED}[ESP]{DEFAULT} SteamID64 ещё недоступен, повторите команду через секунду";
 const PLAYER_ONLY_MESSAGE: &str =
     "[ESP] Команда доступна только игрокам в игре";
 
@@ -109,4 +113,3 @@ pub fn unregister_commands() {
         }
     }
 }
-
