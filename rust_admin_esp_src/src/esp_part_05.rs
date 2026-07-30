@@ -93,8 +93,17 @@ fn chat_message(args: &Arr<Str>) -> Option<String> {
     (!message.is_empty()).then_some(message)
 }
 
+fn render_chat_colors(message: &str) -> String {
+    message
+        .replace("{DEFAULT}", "\x01")
+        .replace("{WHITE}", "\x01")
+        .replace("{GREEN}", "\x04")
+        .replace("{RED}", "\x07")
+}
+
 fn chat(player_slot: i32, message: &str) {
-    s2sdk::console::PrintToChatColored(player_slot, &Str::from(message));
+    let rendered = render_chat_colors(message);
+    s2sdk::console::PrintToChatColored(player_slot, &Str::from(rendered));
 }
 
 #[cfg(test)]
@@ -107,5 +116,14 @@ mod tests {
         assert_eq!(slot_bit(64), 0);
         assert_eq!(slot_bit(0), 1);
         assert_eq!(slot_bit(63), 1_u64 << 63);
+    }
+
+    #[test]
+    fn chat_color_tags_are_converted_to_cs2_control_codes() {
+        let rendered = render_chat_colors("{RED}[ESP]{DEFAULT} ok {GREEN}yes");
+        assert_eq!(rendered, "\x07[ESP]\x01 ok \x04yes");
+        assert!(!rendered.contains("{RED}"));
+        assert!(!rendered.contains("{DEFAULT}"));
+        assert!(!rendered.contains("{GREEN}"));
     }
 }
