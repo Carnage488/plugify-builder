@@ -1,0 +1,25 @@
+{
+  "$schema": "https://raw.githubusercontent.com/untrustedmodders/plugify/refs/heads/main/schemas/plugin.schema.json",
+  "version": "0.2.0",
+  "name": "rust_admin_esp",
+  "description": "Per-recipient administrator player-outline ESP for RustAdmin. Flag b is limited to dead/spectator viewers; root z may use it while alive.",
+  "author": "Carnage",
+  "website": "https://cs2alpha.com",
+  "license": "MIT",
+  "entry": "bin/rust_admin_esp",
+  "platforms": [
+    "steamrt_x64"
+  ],
+  "language": "rust",
+  "dependencies": [
+    {
+      "name": "s2sdk"
+    },
+    {
+      "name": "rust_admin",
+      "constraints": "0.3.2"
+    }
+  ],
+  "methods": [],
+  "classes": []
+}
