@@ -1,0 +1,84 @@
+name: Build RustAdmin ESP v0.2.0
+
+on:
+  push:
+    branches:
+      - build/rust-admin-esp-v0.2.0
+    paths:
+      - rust-admin-esp_v0.2.0_pisex-transmit-parity.zip
+      - .github/workflows/build-rust-admin-esp-v020.yml
+  workflow_dispatch:
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build-linuxsteamrt64:
+    runs-on: ubuntu-latest
+    container:
+      image: registry.gitlab.steamos.cloud/steamrt/sniper/sdk:latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install tools
+        shell: bash -el {0}
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y curl ca-certificates unzip git build-essential pkg-config cmake ninja-build clang libssl-dev file binutils
+
+      - name: Verify and unpack source
+        shell: bash -el {0}
+        run: |
+          test -f rust-admin-esp_v0.2.0_pisex-transmit-parity.zip
+          echo "541e609741d8a0b907d9629cbf5faa031a7d993158e9dda903127d48809cc40f  rust-admin-esp_v0.2.0_pisex-transmit-parity.zip" | sha256sum -c -
+          rm -rf source
+          mkdir source
+          unzip -q rust-admin-esp_v0.2.0_pisex-transmit-parity.zip -d source
+          PROJECT_DIR="$(find source -name Cargo.toml -type f -printf '%h\n' | head -n1)"
+          test -n "$PROJECT_DIR"
+          echo "PROJECT_DIR=$PROJECT_DIR" >> "$GITHUB_ENV"
+
+      - name: Install Rust
+        shell: bash -el {0}
+        run: |
+          curl https://sh.rustup.rs -sSf | sh -s -- -y --profile minimal --default-toolchain stable
+          echo "$HOME/.cargo/bin" >> "$GITHUB_PATH"
+
+      - name: Build release
+        shell: bash -el {0}
+        run: |
+          cd "$PROJECT_DIR"
+          cargo build --release --locked || cargo build --release
+
+      - name: Validate binary
+        shell: bash -el {0}
+        run: |
+          cd "$PROJECT_DIR"
+          SO="target/release/librust_admin_esp.so"
+          test -f "$SO"
+          file "$SO"
+          readelf -h "$SO"
+          ldd "$SO" || true
+          sha256sum "$SO" > rust_admin_esp.so.sha256
+
+      - name: Prepare artifact
+        shell: bash -el {0}
+        run: |
+          mkdir -p output/csgo/addons/plugify/envs/plugins/bin
+          mkdir -p output/csgo/addons/plugify/envs/rust_admin_esp
+          mkdir -p output/csgo/addons/plugify/configs
+          cp "$PROJECT_DIR/target/release/librust_admin_esp.so" output/csgo/addons/plugify/envs/plugins/bin/rust_admin_esp.so
+          cp "$PROJECT_DIR/rust_admin_esp.pplugin" output/csgo/addons/plugify/envs/rust_admin_esp/rust_admin_esp.pplugin
+          cp "$PROJECT_DIR/configs/rust_admin_esp.toml" output/csgo/addons/plugify/configs/rust_admin_esp.toml
+          cp "$PROJECT_DIR/rust_admin_esp.so.sha256" output/
+          find output -type f -print
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: rust-admin-esp-v0.2.0-linuxsteamrt64
+          path: output/
+          retention-days: 7
