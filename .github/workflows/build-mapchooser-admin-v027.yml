@@ -49,6 +49,20 @@ jobs:
         run: |
           set -euo pipefail
 
+          sha256sum \
+            mapchooser_admin_src/encoded/lib.rs.b64.00 \
+            mapchooser_admin_src/encoded/lib.rs.b64.01 \
+            mapchooser_admin_src/encoded/lib.rs.b64.02 \
+            mapchooser_admin_src/encoded/lib.rs.b64.03 \
+            mapchooser_admin_src/encoded/lib.rs.b64.04 \
+            mapchooser_admin_src/encoded/lib.rs.b64.05.00 \
+            mapchooser_admin_src/encoded/lib.rs.b64.05.01 \
+            mapchooser_admin_src/encoded/lib.rs.b64.05.02 \
+            mapchooser_admin_src/encoded/lib.rs.b64.05.03 \
+            mapchooser_admin_src/encoded/lib.rs.b64.05.04 \
+            mapchooser_admin_src/encoded/lib.rs.b64.05.05 \
+            mapchooser_admin_src/encoded/lib.rs.b64.05.06
+
           cat \
             mapchooser_admin_src/encoded/lib.rs.b64.00 \
             mapchooser_admin_src/encoded/lib.rs.b64.01 \
@@ -65,6 +79,7 @@ jobs:
             | tr -d '[:space:]' \
             | base64 -d > mapchooser_admin_src/src/lib.rs
 
+          sha256sum mapchooser_admin_src/src/lib.rs
           echo "56ab5936c261149ffbaf0dff03869d9a5eb7b2be1e754c8e5a51bb425b4155ee  mapchooser_admin_src/src/lib.rs" \
             | sha256sum --check
 
